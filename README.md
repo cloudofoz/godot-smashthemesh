@@ -30,6 +30,63 @@ STM uses Godot's **Constructive Solid Geometry (CSG)** system to create fragment
 
   To open a cache file, simply double-click on it. You can inspect the result and even make edits as needed, but it's important to maintain the tree structure. Note that manually modifying a cache file will invalidate it, so be sure to set `can_write = false` to ensure your changes are not overwritten the next time the program runs.
 
+## API Documentation
+
+### `is_smashed() -> bool`
+**Description:**  
+Returns `true` if the current instance has been smashed, otherwise returns `false`.
+
+### `smash_the_mesh()`
+**Description:**  
+Hides the mesh of the current instance and spawns the physical chunks in its place.  
+Note: The chunks will not appear until this method is called.
+
+### `add_physics_to_self()`
+**Description:**  
+Automatically adds a `RigidBody3D` and a `CollisionShape3D` to the current instance, using the same physics settings as the chunks.
+
+### `chunks_iterate(callback: Callable)`
+**Description:**  
+Iterates over all the chunks' `RigidBody3D` instances, allowing you to perform operations on the chunks of this instance.  
+**Example usage:**
+
+```gdscript
+# Apply a force to all chunks
+callback := func(rb: RigidBody3D, from: DestructableMesh):
+    var collision_shape = rb.get_child(0) as CollisionShape3D
+    var mesh_instance = collision_shape.get_child(0) as MeshInstance3D
+```
+
+### `chunks_get_elapsed_time() -> float`
+**Description:**  
+Returns the time elapsed (in seconds) since `smash_the_mesh()` was called.  
+Returns `0` if `smash_the_mesh()` has not been called.
+
+### `chunks_restart_elapsed_time()`
+**Description:**  
+Updates the elapsed time as if `smash_the_mesh()` was just called.  
+This is useful for restarting time-based animations without restoring the chunks to their original state.
+
+### `chunks_kill()`
+**Description:**  
+Removes all the chunks of this mesh instance.
+
+### `chunks_reset()`
+**Description:**  
+Resets this instance to its state before `smash_the_mesh()` was called.
+
+### `chunks_freeze(enable: bool)`
+**Description:**  
+Freezes or unfreezes the physics simulation of the chunks.  
+- `enable`: Pass `true` to freeze the simulation, or `false` to unfreeze it.
+
+### `chunks_repair(weight: float)`
+**Description:**  
+Reverts the chunks to their starting position.  
+- `weight`: The amount of repair, from `0` (no repair) to `1` (fully repaired).  
+This method can be called each frame with a low value of `weight` to create a backward animation to the original position.  
+**Tip:** Ensure that `chunks_freeze()` is called before using this method to avoid disrupting the physics simulation.
+
 ## Getting Started
 
 TODO
