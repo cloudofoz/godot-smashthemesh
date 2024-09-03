@@ -244,13 +244,49 @@ Represents how much a collider will be allowed to penetrate another object. This
 
 3. Activate `Smash The Mesh` under *Project > Project Settings > Plugins.*
 
-4. Add a *STMCachedInstance3D* node to the scene.
+- We'll now try to make explode a simple torus:
 
+5. Add a *STMCachedInstance3D* node to the scene.
 
+6. Add a new `TorusMesh` in the `Original Mesh` field.
+
+7. Add at least a `Camera3D` node in the scene and make it look the torus.
+   
+8. Write this code in a `script`:
+   
+```gdscript
+# Break the mesh when you press the SPACE key
+func _input(event: InputEvent) -> void:
+    # Check if the event is a key press
+    var key_event = event as InputEventKey
+    
+    # Reference to the STM instance (ensure this matches the name in your scene tree)
+    var stm_instance = $STMCachedInstance3D
+    
+    # Return if STM instance or key event is invalid, or the key is not SPACE
+    if !stm_instance or !key_event or key_event.keycode != KEY_SPACE:
+        return
+    
+    # Break the mesh when SPACE is pressed
+    if key_event.is_pressed():
+        stm_instance.smash_the_mesh()
+    
+    # Apply an "explode" impulse to each fragment/chunk when SPACE is released
+    elif key_event.is_released():
+
+        # Define a callback to apply an impulse to a rigid body chunk
+        var explode_callback = func(rb: RigidBody3D, _from):
+            rb.apply_impulse(-rb.global_position.normalized() * Vector3(1, -1, 1) * 5.0)
+        
+        # Apply the callback to each chunk of the mesh
+        stm_instance.chunks_iterate(explode_callback)
+```
+
+9. Run your program and hit the SPACE to make the torus explode.
 
 <br>
 
-## How-to
+## How-to (code snippets)
 
 TODO
 
