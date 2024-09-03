@@ -190,6 +190,45 @@ If `true`, the `smash_the_mesh()` method will be automatically called at the sta
 
 <br>
 
+## Physics Settings Documentation
+
+<p align="center"> 
+  <img src="media/stm_physics_params.jpg"/>   
+</p>
+
+### `@export_enum(...) var phys_shape: int = 1`
+**Description:**  
+Specifies the collision shape to be used for each chunk.  
+- **Options:**
+  - `Sphere: 0`
+  - `Box: 1`
+  - `Capsule: 2`
+  - `Cylinder: 3`
+  - `ConvexShape: 4`
+- **Note:** If precise collisions are required, you can use `ConvexShape`, but be aware that it may cause performance loss when dealing with a large number of chunks.
+
+### `@export_range(0.01, 10, 0.1, "or_greater") var phys_total_mass: float = 1.0`
+**Description:**  
+Represents the mass of the entire geometry. Each chunk will have a fraction of this mass based on its volume or size.
+
+### `@export var phys_material: PhysicsMaterial = null`
+**Description:**  
+Specifies the physical material to be applied to each chunk.
+
+### `@export_flags_3d_physics var phys_collision_layer: int = 1`
+**Description:**  
+Defines the physics layers that the chunk will check for collisions.
+
+### `@export_flags_3d_physics var phys_mask_layer: int = 1`
+**Description:**  
+Specifies the physics layers where the chunk will reside when another collider checks for collisions.
+
+### `@export_range(0.0, 1.0, 0.05, "or_greater") var phys_collision_priority: float = 1.0`
+**Description:**  
+Represents how much a collider will be allowed to penetrate another object. This value helps determine the priority of collision handling.
+
+<br>
+
 ## Getting Started
 
 TODO
