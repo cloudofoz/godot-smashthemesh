@@ -52,13 +52,16 @@ Automatically adds a `RigidBody3D` and a `CollisionShape3D` to the current insta
 ### `chunks_iterate(callback: Callable)`
 **Description:**  
 Iterates over all the chunks' `RigidBody3D` instances, allowing you to perform operations on the chunks of this instance.  
-**Example usage:**
+**Example of `callback`:**
 
 ```gdscript
-# Apply a force to all chunks
+# Perform an action for each chunk
 callback := func(rb: RigidBody3D, from: DestructableMesh):
+    # Get the collision shape of each chunk
     var collision_shape = rb.get_child(0) as CollisionShape3D
+    # Get the mesh instance of each chunk
     var mesh_instance = collision_shape.get_child(0) as MeshInstance3D
+    # ...perform additional actions with each chunk (e.g., apply a force)
 ```
 
 ### `chunks_get_elapsed_time() -> float`
@@ -235,7 +238,17 @@ Represents how much a collider will be allowed to penetrate another object. This
 
 ## Getting Started
 
-TODO
+1. Download the [repository](https://github.com/cloudofoz/godot-smashthemesh/archive/refs/heads/main.zip).
+
+2. Import the **addons** folder into your project.
+
+3. Activate `Smash The Mesh` under *Project > Project Settings > Plugins.*
+
+4. Add a *STMCachedInstance3D* node to the scene.
+
+
+
+<br>
 
 ## How-to
 
