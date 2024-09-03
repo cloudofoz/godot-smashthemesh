@@ -30,6 +30,8 @@ STM uses Godot's **Constructive Solid Geometry (CSG)** system to create fragment
 
   To open a cache file, simply double-click on it. You can inspect the result and even make edits as needed, but it's important to maintain the tree structure. Note that manually modifying a cache file will invalidate it, so be sure to set `can_write = false` to ensure your changes are not overwritten the next time the program runs.
 
+<br>
+
 ## API Documentation
 
 ### `is_smashed() -> bool`
@@ -86,6 +88,48 @@ Reverts the chunks to their starting position.
 - `weight`: The amount of repair, from `0` (no repair) to `1` (fully repaired).  
 This method can be called each frame with a low value of `weight` to create a backward animation to the original position.  
 **Tip:** Ensure that `chunks_freeze()` is called before using this method to avoid disrupting the physics simulation.
+
+<br>
+
+## Cache System Documentation
+
+<p align="center"> 
+  <img src="media/stm_cache_system.jpg"/>   
+</p>
+
+### `@export var cache_write: bool = true`
+**Description:**  
+When enabled, the cache will be overwritten when the cached data becomes invalid.  
+If multiple instances use the same cache file, it is advisable to have only one instance with `cache_write = true`. This allows you to modify the cache data for all instances from a single point (the instance with `cache_write = true`).
+
+### `@export var cache_read: bool = true`
+**Description:**  
+When enabled, the object will attempt to load data from the cache file instead of computing it.  
+- If the cache isn't found, the data will be computed (either at loading time or when needed).
+- If `cache_write = true`, the computed data will be saved to disk, preventing future computations.
+- If `cache_read = false`, the data will always be computed at run-time.
+
+### `@export var cache_is_saved: bool = false`
+**Description:**  
+An informational property (not meant to be modified) that indicates whether this instance can read the cache from disk without the need to recompute the data.
+
+### `@export_file("*.scn") var cache_name: String = str(get_instance_id())`
+**Description:**  
+Specifies the name of the cache file on disk.  
+- To have multiple instances of the same object read from the same cache, set the same `cache_name` for all instances.
+- In this case, it is advisable to disable `cache_write` for all instances except one, which can be used to modify the cache.
+- To ensure that the cache data is never overwritten, set `cache_write = false` for all objects.
+
+### `@export var cache_baked_shape: bool = true`
+**Description:**  
+When enabled, the collision shape of the chunks will be read directly from the cache without being recomputed.  
+- If you want to keep the chunk data from the cache but use a different collision shape, set `cache_baked_shape = false`.
+
+### `@export var cache_baked_physics: bool = false`
+**Description:**  
+When enabled, all physics data of the chunks will be read directly from the cache without being recomputed.  
+- If you want to keep the chunk data from the cache but use different physics settings, set `cache_baked_physics = false`.
+  
 
 ## Getting Started
 
