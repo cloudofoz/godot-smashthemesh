@@ -5,7 +5,8 @@
 **Smash The Mesh (STM)** is a Godot add-on that allows you to **break a 3D mesh** into **multiple pieces** and then **apply physics** to each fragment. It also offers the ability to **save the results to disk (cache)** and load them quickly, thereby avoiding the need for repetitive, often time-consuming computations.
 
 <p align="center"> 
-  <img src="media/stm_title.png" width="400"/>   
+  <img src="media/stm_title.png" height="300"/>   
+  <img src="media/stm_reel.gif" width="300"/>   
 </p>
 
 #### *Note*: This is a *BETA* version and is still under development. It should be tested thoroughly to assess its suitability for your needs.
