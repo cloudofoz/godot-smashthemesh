@@ -12,11 +12,23 @@
 
 #### *Note*: This is a *BETA* version and is still under development. It should be tested thoroughly to assess its suitability for your needs.
 
-<br>
-
 ### Under the Hood
 
 STM uses Godot's **Constructive Solid Geometry (CSG)** system to create fragments from a mesh.
+
+<br>
+
+## Table of Contents
+- [STM Nodes](#stm-nodes)
+- [Installation](#installation)
+- [Getting Started Example](#getting-started-example)
+- [API Documentation](#api-documentation)
+- [Cache System Documentation](#cache-system-documentation)
+- [Physics Settings Documentation](#physics-settings-documentation)
+- [Performance Tips](#performance-tips)
+- [Known Issues](#known-issues)
+- [Contribution](#contribution)
+- [License](#license)
 
 <br>
 
@@ -31,6 +43,56 @@ STM uses Godot's **Constructive Solid Geometry (CSG)** system to create fragment
   This class extends `STMInstance3D` by adding a caching system that only recomputes data when it becomes invalid (for example, if you change the generation parameters). The cache is stored as a compressed scene on the disk, with the default path set to `res://stm_cache/`. This cache can be reused across multiple instances with the same geometry. However, be cautious when dealing with a lot of geometry and many fragments, as the size of the cache file will increase. It’s a good idea to periodically check the folder.
 
   To open a cache file, simply double-click on it. You can inspect the result and even make edits as needed, but it's important to maintain the tree structure. Note that manually modifying a cache file will invalidate it, so be sure to set `can_write = false` to ensure your changes are not overwritten the next time the program runs.
+
+<br>
+
+## Installation
+
+1. Download the [repository](https://github.com/cloudofoz/godot-smashthemesh/archive/refs/heads/main.zip).
+
+2. Import the **addons** folder into your project.
+
+3. Activate `Smash The Mesh` under *Project > Project Settings > Plugins.*
+
+## Getting Started Example
+
+1. Add a *STMCachedInstance3D* node to the scene.
+
+2. Add a new `TorusMesh` in the `Original Mesh` field.
+
+3. Add at least a `Camera3D` node in the scene and make it look the torus.
+   
+4. Write this code in a `script`:
+   
+```gdscript
+# Break the mesh when you press the SPACE key
+func _input(event: InputEvent) -> void:
+    # Check if the event is a key press
+    var key_event = event as InputEventKey
+    
+    # Reference to the STM instance (ensure this matches the name in your scene tree)
+    var stm_instance = $STMCachedInstance3D
+    
+    # Return if STM instance or key event is invalid, or the key is not SPACE
+    if !stm_instance or !key_event or key_event.keycode != KEY_SPACE:
+        return
+    
+    # Break the mesh when SPACE is pressed
+    if key_event.is_pressed():
+        stm_instance.smash_the_mesh()
+    
+    # Apply an "explode" impulse to each fragment/chunk when SPACE is released
+    elif key_event.is_released():
+
+        # Define a callback to apply an impulse to a rigid body chunk
+        var explode_callback = func(rb: RigidBody3D, _from):
+            rb.apply_impulse(-rb.global_position.normalized() * Vector3(1, -1, 1) * 5.0)
+        
+        # Apply the callback to each chunk of the mesh
+        stm_instance.chunks_iterate(explode_callback)
+```
+
+5. Run your program and hit the SPACE to make the torus explode.
 
 <br>
 
@@ -236,59 +298,21 @@ Represents how much a collider will be allowed to penetrate another object. This
 
 <br>
 
-## Getting Started
+## Performance Tips
 
-1. Download the [repository](https://github.com/cloudofoz/godot-smashthemesh/archive/refs/heads/main.zip).
+- **Mesh Complexity**: High polygon meshes may result in slow fragmentation. Consider simplifying the mesh before fragmentation.
+- **Caching**: Use the caching feature to save fragmented meshes and improve load times.
+- **Physics Settings**: Adjust physics settings to balance realism and performance, especially for large numbers of fragments.
 
-2. Import the **addons** folder into your project.
+## Known Issues
 
-3. Activate `Smash The Mesh` under *Project > Project Settings > Plugins.*
+- Some meshes may not fragment as expected due to limitations in the CSG system.
+- Performance may degrade significantly with very complex meshes or large numbers of fragments.
+- As this is a BETA version, there may be other unforeseen issues. Please report any bugs to the issue tracker.
 
-- We'll now try to make explode a simple torus:
+## Contribution
 
-5. Add a *STMCachedInstance3D* node to the scene.
-
-6. Add a new `TorusMesh` in the `Original Mesh` field.
-
-7. Add at least a `Camera3D` node in the scene and make it look the torus.
-   
-8. Write this code in a `script`:
-   
-```gdscript
-# Break the mesh when you press the SPACE key
-func _input(event: InputEvent) -> void:
-    # Check if the event is a key press
-    var key_event = event as InputEventKey
-    
-    # Reference to the STM instance (ensure this matches the name in your scene tree)
-    var stm_instance = $STMCachedInstance3D
-    
-    # Return if STM instance or key event is invalid, or the key is not SPACE
-    if !stm_instance or !key_event or key_event.keycode != KEY_SPACE:
-        return
-    
-    # Break the mesh when SPACE is pressed
-    if key_event.is_pressed():
-        stm_instance.smash_the_mesh()
-    
-    # Apply an "explode" impulse to each fragment/chunk when SPACE is released
-    elif key_event.is_released():
-
-        # Define a callback to apply an impulse to a rigid body chunk
-        var explode_callback = func(rb: RigidBody3D, _from):
-            rb.apply_impulse(-rb.global_position.normalized() * Vector3(1, -1, 1) * 5.0)
-        
-        # Apply the callback to each chunk of the mesh
-        stm_instance.chunks_iterate(explode_callback)
-```
-
-9. Run your program and hit the SPACE to make the torus explode.
-
-<br>
-
-## How-to (code snippets)
-
-TODO
+Contributions are welcome! Please fork the repository and submit a pull request with your improvements. Make sure to follow the project's coding standards and write clear commit messages.
 
 ## License
 
