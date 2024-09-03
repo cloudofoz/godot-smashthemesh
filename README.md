@@ -7,6 +7,7 @@
 <p align="center"> 
   <img src="media/stm_title.png" height="300"/>   
   <img src="media/stm_reel.gif" width="300"/>   
+  <img src="media/stm_cache.gif" width="300"/>   
 </p>
 
 #### *Note*: This is a *BETA* version and is still under development. It should be tested thoroughly to assess its suitability for your needs.
