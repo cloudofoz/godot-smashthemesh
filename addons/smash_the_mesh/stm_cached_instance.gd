@@ -47,22 +47,22 @@ const stm_cache_folder = "stm_cache"
 
 @export_group("Cache Options", "cache_")
 
-# When this option is enabled the cache will be overwritten when thecache data become invalid.
-# If you have many istances that use the same cache file it's advisable to keep only one istance with
-# cache_write = true. In this way you can change the data for all the istances from a single place
-# (the instance that has cache_write = true)
+## When this option is enabled the cache will be overwritten when the cache data become invalid.
+## If you have many istances that use the same cache file it's advisable to keep only one istance with
+## cache_write = true. In this way you can change the data for all the istances from a single place
+## (the instance that has cache_write = true)
 @export
 var cache_write = true
 
-# When this option is enabled the object will try to load the data from the cache file instead of computing
-# it. If the cache isn't found then a computation will be performed (at loading time or when it's needed)
-# If cache_write = true then the computed data will be saved in the disk and no more computations will be
-# performed the next time. If cache_read = false the data will always be computed at run-time.
+## When this option is enabled the object will try to load the data from the cache file instead of computing
+## it. If the cache isn't found then a computation will be performed (at loading time or when it's needed)
+## If cache_write = true then the computed data will be saved in the disk and no more computations will be
+## performed the next time. If cache_read = false the data will always be computed at run-time.
 @export
 var cache_read = true
 
-# This is just an info box, that is not meant to be touched. It informs you wether this istance can read 
-# the cache from the disk without losing time to recompute the data.
+## This is just an info box, that is not meant to be touched. It informs you wether this istance can read 
+## the cache from the disk without losing time to recompute the data.
 @export 
 var cache_is_saved = false:
 	set(value):
@@ -73,10 +73,10 @@ var cache_is_saved = false:
 			return
 		cache_is_saved = stm_check_cache()
 
-# This string is the name of the file cache on the disk. If you want that multiple istances of the same
-# object read from the same cache then they you have to specify the same cache_name for all.
-# In this case it's advisable to turn off cache_write for all the istances except one, that you can use to modify the cache.
-# If you want to be sure that this data will not be overwritten anymore then you can set cache_write = false for all the objects.
+## This string is the name of the file cache on the disk. If you want that multiple istances of the same
+## object read from the same cache then they you have to specify the same cache_name for all.
+## In this case it's advisable to turn off cache_write for all the istances except one, that you can use to modify the cache.
+## If you want to be sure that this data will not be overwritten anymore then you can set cache_write = false for all the objects.
 @export_file("*.scn")
 var cache_name: String = str(get_instance_id()):
 	set(value):
@@ -87,15 +87,15 @@ var cache_name: String = str(get_instance_id()):
 		stm_no_cache_check = false
 		chunks_reset()
 
-# When this option is true the collision shape of the chunks will be directly read from the cache without
-# being recomputed. If you want to keep the chunk data from the cache but to use a different collision shape
-# for the chunks then you can set cache_baked_shape = false
+## When this option is true the collision shape of the chunks will be directly read from the cache without
+## being recomputed. If you want to keep the chunk data from the cache but to use a different collision shape
+## for the chunks then you can set cache_baked_shape = false
 @export
 var cache_baked_shape = true
 
-# When this option is true all the physics data of the chunks will be directly read from the cache without
-# being recomputed. If you want to keep the chunk data from the cache but to have diffrente physics
-# settings then you can set cache_baked_physics = false
+## When this option is true all the physics data of the chunks will be directly read from the cache without
+## being recomputed. If you want to keep the chunk data from the cache but to have diffrente physics
+## settings then you can set cache_baked_physics = false
 @export
 var cache_baked_physics = false
 

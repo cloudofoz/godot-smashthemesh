@@ -45,7 +45,7 @@ const chunk_safe_limit = 6
 # PUBLIC VARIABLES
 #---------------------------------------------------------------------------------------------------
 
-# The original (source) mesh that you want to break
+## The original (source) mesh that you want to break
 @export var original_mesh: Mesh:
 	set(value):
 		if original_mesh == value: return
@@ -57,27 +57,27 @@ const chunk_safe_limit = 6
 
 @export_group("Chunks Generation", "chunk_")
 
-# This mesh is used as an intersection volume for each voxel to create the chunks. 
-# Its shape can change the result quite a lot and
-# also can create unwanted artifacts, if the shape is not well chosen. 
-# If you want to create your own brush meshes then you should keep it centered on the origin of the system with
-# a size not too distant from the unit: 1x1x1 size. If you change these conventions too much it could produce 
-# unpredictable results. 
-# A set of experimental brush meshes can be found on the sub-folder "brushes".
-# The "wood" brush, for example, behaved particulary well to simulate the typical breaking of some wood material
+## This mesh is used as an intersection volume for each voxel to create the chunks. 
+## Its shape can change the result quite a lot and
+## also can create unwanted artifacts, if the shape is not well chosen. 
+## If you want to create your own brush meshes then you should keep it centered on the origin of the system with
+## a size not too distant from the unit: 1x1x1 size. If you change these conventions too much it could produce 
+## unpredictable results. 
+## A set of experimental brush meshes can be found on the sub-folder "brushes".
+## The "wood" brush, for example, behaved particulary well to simulate the typical breaking of some wood material
 @export var chunk_brush: Mesh = StandardBrush:
 	set(value):
 		if chunk_brush == value: return
 		chunk_brush = value
 		on_fracture_param_changed.emit()
 
-# This is the material that will be used for the inner parts of chunks. 
+## This is the material that will be used for the inner parts of chunks. 
 @export var chunk_inner_material: StandardMaterial3D = StandardMaterial3D.new()
 
-# As a 3D voxel grid this is can also represent the maximum numbers of chunks that will be created for each axis.
-# The maximum number of possible created chunks will be chunk_count.x * chunk_count.y * chunk_count.z.
-# An example: If you have a tall object (Y axis) and thin (X, Z) then you can try to increase just the count on the Y,
-# while keeping the other two values at the minimum. Choosing well this numbers is important to obtain the desired effect.
+## As a 3D voxel grid this is can also represent the maximum numbers of chunks that will be created for each axis.
+## The maximum number of possible created chunks will be chunk_count.x * chunk_count.y * chunk_count.z.
+## An example: If you have a tall object (Y axis) and thin (X, Z) then you can try to increase just the count on the Y,
+## while keeping the other two values at the minimum. Choosing well this numbers is important to obtain the desired effect.
 @export var chunk_count: Vector3i = Vector3i(2,2,2):
 	set(value):
 		if chunk_count == value: return
@@ -87,27 +87,27 @@ const chunk_safe_limit = 6
 		chunk_count = value
 		on_fracture_param_changed.emit()
 
-# This threshold represents the minimum number of vertices necessary for a chunk to not be discarded. Choosing well this
-# value is important to avoid meaningless chunks. Nevertheless big values can reduce the amount of chunks that are created.
-# Tip: Keep a look at the console when the chunks are generated to see the amount of vertices for each chunk. Then
-# you can set this value accordingly.
+## This threshold represents the minimum number of vertices necessary for a chunk to not be discarded. Choosing well this
+## value is important to avoid meaningless chunks. Nevertheless big values can reduce the amount of chunks that are created.
+## Tip: Keep a look at the console when the chunks are generated to see the amount of vertices for each chunk. Then
+## you can set this value accordingly.
 @export var chunk_vertices_threshold: int = 32:
 	set(value):
 		if(chunk_vertices_threshold == value): return
 		chunk_vertices_threshold = value
 		on_fracture_param_changed.emit()
 
-# When this option is set to false the chunks will be removed from the mesh starting from the minimum position of the bounding box.
-# You can try to turn off this flag if you need a bit more regular results.
+## When this option is set to false the chunks will be removed from the mesh starting from the minimum position of the bounding box.
+## You can try to turn off this flag if you need a bit more regular results.
 @export var chunk_random_sampling: bool = true:
 	set(value):
 		if chunk_random_sampling == value: return
 		chunk_random_sampling = value
 		on_fracture_param_changed.emit()
 
-# The amount of noise that will be applied to the brush geometry before the computations. It can help to create some
-# interesting irregularities but it can create also a lot of artifacts. 
-# It a factor that depends on the size of the mesh. If you see too much artifacts try to set the noise factor = 0
+## The amount of noise that will be applied to the brush geometry before the computations. It can help to create some
+## interesting irregularities but it can create also a lot of artifacts. 
+## It a factor that depends on the size of the mesh. If you see too much artifacts try to set the noise factor = 0
 @export var chunk_noise_factor: Vector3 = Vector3.ZERO:
 	set(value):
 		if chunk_noise_factor.is_equal_approx(value): return
@@ -119,41 +119,39 @@ const chunk_safe_limit = 6
 
 @export_subgroup("Options", "chunk_opt_")
 
-# If this parameter is set to true then any possible chunk computation for this istance will be performed at loading time.
-# When it's turned off the chunks will be calculated only when you call the method smash_the_mesh()
+## If this parameter is set to true then any possible chunk computation for this istance will be performed at loading time.
+## When it's turned off the chunks will be calculated only when you call the method smash_the_mesh()
 @export var chunk_opt_preload: bool = true
 
-# If this option is set to true, smash_the_mesh() will be called since the beginning 
+## If this option is set to true, smash_the_mesh() will be called since the beginning 
 @export
 var chunk_opt_already_smashed = false
 
 @export_group("Chunks Physics", "phys_")
 
-# The collision shape that it will be used for each chunks
-# If you need a particular precision with the collisions you can use ConvexShape, but there could be some performance loss
-# when there are a lot of chunks
+## The collision shape that it will be used for each chunks
+## If you need a particular precision with the collisions you can use ConvexShape, but there could be some performance loss
+## when there are a lot of chunks
 @export_enum("Sphere: 0", "Box: 1", "Capsule: 2", "Cylinder: 3", "ConvexShape: 4" )
 var phys_shape = 1
 
-# This value represent the mass for the whole geometry. Each chunk will have a fraciton of this mass based on its volume/size.
+## This value represent the mass for the whole geometry. Each chunk will have a fraciton of this mass based on its volume/size.
 @export_range(0.01, 10, 0.1, "or_greater")
 var phys_total_mass = 1.0
 
-# This is the physical material that will be applied to each chunk
+## This is the physical material that will be applied to each chunk
 @export
 var phys_material: PhysicsMaterial = null
 
-# These are the physics layers that the chunk will check for collisions
+## These are the physics layers that the chunk will check for collisions
 @export_flags_3d_physics
 var phys_collision_layer: int = 1
 
-# These are the physics layers where the chunk will stay when another collider check for collisions
-# By default to avoid an initial little explosion of the mesh the chunks don't collide with each other.
-# If you want to have proper collisions between chunks then you just need to change these values.
+## These are the physics layers where the chunk will stay when another collider check for collisions
 @export_flags_3d_physics
-var phys_mask_layer: int = 1 << 2
+var phys_mask_layer: int = 1 # 1 << 2
 
-# Represents how much a collider will be let to penetrate into another 
+## Represents how much a collider will be let to penetrate into another 
 @export_range(0.0, 1.0, 0.05, "or_greater")
 var phys_collision_priority = 1.0
 
