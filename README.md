@@ -168,6 +168,10 @@ Sets the minimum number of vertices required for a chunk to be retained.
 - Note: Higher values can reduce the number of chunks created.
 - **Tip:** Monitor the console when generating chunks to see the vertex count for each chunk, and adjust this value accordingly.
 
+<p align="center"> 
+  <img src="media/stm_console.jpg"/>   
+</p>
+
 ### `@export var chunk_random_sampling: bool = true`
 **Description:**  
 When set to `false`, chunks are removed from the mesh starting from the minimum position of the bounding box.  
