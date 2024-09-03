@@ -24,6 +24,7 @@ STM uses Godot's **Constructive Solid Geometry (CSG)** system to create fragment
 - [Getting Started Example](#getting-started-example)
 - [API Documentation](#api-documentation)
 - [Cache System Documentation](#cache-system-documentation)
+- [Chunks Generation Documentation](#chunks-generation-documentation)
 - [Physics Settings Documentation](#physics-settings-documentation)
 - [Performance Tips](#performance-tips)
 - [Known Issues](#known-issues)
