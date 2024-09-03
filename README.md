@@ -129,7 +129,64 @@ When enabled, the collision shape of the chunks will be read directly from the c
 **Description:**  
 When enabled, all physics data of the chunks will be read directly from the cache without being recomputed.  
 - If you want to keep the chunk data from the cache but use different physics settings, set `cache_baked_physics = false`.
-  
+
+<br>
+
+## Chunks Generation Documentation
+
+<p align="center"> 
+  <img src="media/stm_chunks_generation.jpg"/>   
+</p>
+
+### `@export var original_mesh: Mesh`
+**Description:**  
+Specifies the original (source) mesh that you want to break into chunks.
+
+### `@export var chunk_brush: Mesh = StandardBrush`
+**Description:**  
+Defines the mesh used as an intersection volume for each voxel to create the chunks.  
+- The shape of the brush can significantly influence the result and may cause unwanted artifacts if not chosen carefully.
+- If you create custom brush meshes, keep them centered on the origin of the system with a size close to `1x1x1` to avoid unpredictable results.
+- A set of experimental brush meshes is available in the "brushes" sub-folder. For example, the "wood" brush has been used for simulating the breaking of wood material.
+
+### `@export var chunk_inner_material: StandardMaterial3D`
+**Description:**  
+Specifies the material to be used for the inner parts of the chunks.
+
+### `@export var chunk_count: Vector3i = Vector3i(2, 2, 2)`
+**Description:**  
+Represents the 3D voxel grid, which also indicates the maximum number of chunks that can be created for each axis.  
+- The maximum number of chunks is determined by `chunk_count.x * chunk_count.y * chunk_count.z`.
+- Example: If your object is tall (Y axis) but thin (X, Z), you might increase the count on the Y axis while keeping the other two values low to achieve the desired effect.
+
+### `@export var chunk_vertices_threshold: int = 32`
+**Description:**  
+Sets the minimum number of vertices required for a chunk to be retained.  
+- Choosing this value carefully is important to avoid creating insignificant chunks. 
+- Note: Higher values can reduce the number of chunks created.
+- **Tip:** Monitor the console when generating chunks to see the vertex count for each chunk, and adjust this value accordingly.
+
+### `@export var chunk_random_sampling: bool = true`
+**Description:**  
+When set to `false`, chunks are removed from the mesh starting from the minimum position of the bounding box.  
+- Disable this flag if you need more regular and predictable chunking results.
+
+### `@export var chunk_noise_factor: Vector3 = Vector3.ZERO`
+**Description:**  
+Specifies the amount of noise applied to the brush geometry before computations.  
+- Adding noise can create interesting irregularities but may also cause artifacts.
+- This factor is size-dependent. If you notice excessive artifacts, try setting the noise factor to `0`.
+
+### `@export var chunk_opt_preload: bool = true`
+**Description:**  
+If `true`, chunk computation will occur at loading time.  
+- When `false`, chunks will only be calculated when the `smash_the_mesh()` method is called.
+
+### `@export var chunk_opt_already_smashed: bool = false`
+**Description:**  
+If `true`, the `smash_the_mesh()` method will be automatically called at the start.
+
+<br>
 
 ## Getting Started
 
