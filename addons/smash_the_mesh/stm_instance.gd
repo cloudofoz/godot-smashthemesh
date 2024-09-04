@@ -22,7 +22,7 @@
 extends MeshInstance3D
 
 ## This class can automatically break a mesh and then adds physics to the generated chunks.
-## This can be done at loading time (preloading = true)
+## This can be done at loading time (chunk_opt_preload = true)
 ## or when the method 'smash_the_mesh()' is called.
 ## Useful for very light geometry that doesn't require too much computation. 
 ## If performance is an issue it's really advisable to use STMCachedInstance3D.
