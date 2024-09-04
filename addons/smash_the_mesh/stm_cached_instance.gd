@@ -30,7 +30,7 @@ extends STMInstance3D
 ## To open a cache file you just need to double-click on it. You can check the result and even
 ## edit as you wish but keep the structure of the tree intact.
 ## Please remember that when you manually modify a cache file it will ivalidate it. So 
-## be sure to set "can_write = false" to ensure that your modifcations will not be overwritten
+## be sure to set "cache_write = false" to ensure that your modifcations will not be overwritten
 ## the next time you run your program.
 class_name STMCachedInstance3D
 
