@@ -309,6 +309,7 @@ Represents how much a collider will be allowed to penetrate another object. This
 
 - Some meshes may not fragment as expected due to limitations in the CSG system.
 - Performance may degrade significantly with very complex meshes or large numbers of fragments.
+- **Mesh Original Size Issue**: If you encounter problems fracturing the mesh, try checking the mesh's original size. Until this issue is fixed, there may be difficulties with meshes that are not at least 1 unit in size on at least one axis (preferably larger). For example, a long but thin panel may still work if at least one dimension is sufficiently large to avoid problems with the voxel grid used for fracture computation.
 - As this is a BETA version, there may be other unforeseen issues. Please report any bugs to the issue tracker.
 
 ## Contribution
