@@ -107,7 +107,9 @@ Returns `true` if the current instance has been smashed, otherwise returns `fals
 ### `smash_the_mesh()`
 **Description:**  
 Hides the mesh of the current instance and spawns the physical chunks in its place.  
-Note: The chunks will not appear until this method is called.
+
+- **Note (1)**: The chunks will not appear until this method is called.
+- **Note (2)**: If you're applying physics (e.g., `apply_impulse()`) immediately after `smash_the_mesh()`, ensure that the `RigidBody3D` is fully initialized in the physics space. To avoid issues, consider awaiting a process frame or using `call_deferred()` to apply the physics after the current frame.
 
 ### `add_physics_to_self()`
 **Description:**  
