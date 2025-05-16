@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/Godot-v4.3-informational) ![License](https://img.shields.io/github/license/cloudofoz/godot-smashthemesh?version=1.0.1)
+![Version](https://img.shields.io/badge/Godot-v4.4.1-informational) ![License](https://img.shields.io/github/license/cloudofoz/godot-smashthemesh?version=1.0.1)
 
 ## Introduction
 
@@ -10,7 +10,9 @@
   <img src="media/stm_cache.gif" width="300"/>   
 </p>
 
-#### *Note*: This is a *BETA* version and is still under development. It should be tested thoroughly to assess its suitability for your needs.
+#### Note 1: This is a BETA version and still under development. Please test thoroughly to ensure it fits your needs.
+#### Note 2: As of Godot 4.4+, non-manifold meshes are no longer supported by the CSG system (e.g., open meshes, non-watertight surfaces, or disconnected faces). Make sure your meshes are fully manifold before using STM.
+
 
 ### Under the Hood
 
