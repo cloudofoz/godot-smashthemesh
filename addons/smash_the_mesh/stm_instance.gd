@@ -49,6 +49,18 @@ const chunk_safe_limit = 6
 @export var original_mesh: Mesh:
 	set(value):
 		if original_mesh == value: return
+		
+		var fracture_tool = FractureTool.new(self)
+		fracture_tool.begin(value)
+		var is_mesh_supported = fracture_tool.check_mesh_is_supported()
+		fracture_tool.end()
+		
+		if !is_mesh_supported:
+			push_error("Unsupported mesh: Godot's CSG system (v4.4+) only works with manifold geometry. Make sure the mesh is closed and has no holes or disconnected faces.")
+			original_mesh = null
+			mesh = null
+			return
+		
 		original_mesh = value
 		mesh = value
 		if original_mesh: 

@@ -62,6 +62,16 @@ func end():
 	#stm_parent_node.remove_child(stm_csg_source_node)
 	#stm_csg_source_node.visible = false
 
+func check_mesh_is_supported() -> bool:
+	stm_csg_source_node._update_shape()
+	var mesh_arrays = stm_csg_source_node.get_meshes()
+	if mesh_arrays.size() != 2:
+		return false
+	var mesh = mesh_arrays[1] as Mesh
+	if not mesh or mesh.get_faces().size() < 3:
+		return false
+	return true
+
 func fracture(chunk_mesh: Mesh, chunks_count: Vector3i, opt: Dictionary):
 	
 	if !chunk_mesh: return	
