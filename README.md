@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/Godot-v4.5-informational) ![License](https://img.shields.io/github/license/cloudofoz/godot-smashthemesh?version=1.0.1)
+![Version](https://img.shields.io/badge/Godot-v4.6.2-informational) ![License](https://img.shields.io/github/license/cloudofoz/godot-smashthemesh?version=1.0.1)
 
 ## Introduction
 
