@@ -211,6 +211,16 @@ func _ready():
 	if chunk_opt_already_smashed:
 		smash_the_mesh()
 
+# Called right before the object is deleted
+# Ensures the detached rb_parent node does not remain orphaned
+func _notification(what: int) -> void:
+	
+	if what == NOTIFICATION_PREDELETE:
+		if is_instance_valid(rb_parent):
+			rb_parent.queue_free()
+
+		rb_parent = null
+
 # This virtual method is overridden by the CachedDestructibleMesh
 # It's the code that starts the chunks computation
 func _stm_compute_fractures():
